@@ -10,15 +10,12 @@ import {
 
 export default function Card(props) {
   const [isEditMode, setIsEditMode] = useState(false);
-
   function enableEditMode() {
     setIsEditMode(true);
   }
-
   function disableEditMode() {
     setIsEditMode(false);
   }
-
   return (
     <MuiCard>
       {isEditMode ? (
@@ -29,7 +26,6 @@ export default function Card(props) {
     </MuiCard>
   );
 }
-
 function CardModeShow({ id, content, name, onEnableEditMode }) {
   return (
     <>
@@ -42,8 +38,11 @@ function CardModeShow({ id, content, name, onEnableEditMode }) {
       <CardActions>
         <Button
           size="small"
-          onClick={() => {
-            console.log("Delete card", id, content, name);
+          onClick={async () => {
+            const response = await fetch("/api/card/" + id, {
+              method: "DELETE",
+            });
+            console.log(await response.json());
           }}
         >
           Delete
@@ -55,17 +54,22 @@ function CardModeShow({ id, content, name, onEnableEditMode }) {
     </>
   );
 }
-
 function CardModeEdit({ id, content, name, onDisableEditMode }) {
   const [nameValue, setNameValue] = useState(name);
   const [contentValue, setContentValue] = useState(content);
-
-  function onFormSubmit(event) {
+  async function onFormSubmit(event) {
     event.preventDefault();
     console.log(id, nameValue, contentValue);
+    const response = await fetch("/api/card/" + id, {
+      method: "PUT",
+      body: JSON.stringify({
+        content: contentValue,
+        name: nameValue,
+      }),
+    });
+    console.log(await response.json());
     onDisableEditMode();
   }
-
   return (
     <form onSubmit={onFormSubmit}>
       <CardContent>
@@ -92,39 +96,10 @@ function CardModeEdit({ id, content, name, onDisableEditMode }) {
         />
       </CardContent>
       <CardActions>
-        <Button
-          type="submit"
-          size="small"
-          onClick={() => {
-            console.log("Delete card", id, content, name);
-          }}
-        >
+        <Button type="submit" size="small">
           Save
         </Button>
       </CardActions>
     </form>
   );
 }
-
-/* import {
-  Card as MuiCard,
-  Typography,
-  CardContent,
-  CardActions,
-  Button,
-} from "@mui/material";
-
-export default function Card({ name, content }) {
-  return (
-    <MuiCard>
-      <CardContent>
-        <Typography variant="h5">{content}</Typography>
-        <Typography>{name}</Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Delete</Button>
-        <Button size="small">Edit</Button>
-      </CardActions>
-    </MuiCard>
-  );
-} */
