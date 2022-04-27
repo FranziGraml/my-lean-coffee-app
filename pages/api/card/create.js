@@ -1,5 +1,5 @@
 export default function handler(request, response) {
-  if (request.methode === "POST") {
+  if (request.method === "POST") {
     const newCard = JSON.parse(request.body);
 
     response.status(200).json({
