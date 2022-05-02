@@ -4,13 +4,15 @@ import CardGrid from "../src/Component/CardGrid";
 import { getCards } from "../src/services/get-cards";
 import swrFetcher from "../src/lib/swr-fetcher";
 
-export function getStaticProps() {
-  const cards = getCards();
+export async function getStaticProps() {
+  const cards = await getCards();
 
   return {
     props: {
       //cards,
       fallback: {
+        // folgende Daten (aus lokaler JSON Datein) sollen als Fallback genutz werden, wenn über Server folgende Route angefragt wird
+        // (wenn über Browser Anfrage stattfindet, dann sollen Daten von der API geladen werden)
         "/api/cards": cards,
       },
     },
