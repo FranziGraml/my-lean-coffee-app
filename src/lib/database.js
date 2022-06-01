@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const url = "mongodb://localhost:27017/lean-coffee-app";
+const url = /* process.env.DB_CONNECTION; */ "mongodb://localhost:27017/lean-coffee-app";
 export async function dbConnect() {
   try {
     await mongoose.connect(url);

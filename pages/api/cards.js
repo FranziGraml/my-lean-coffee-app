@@ -9,7 +9,6 @@ export default async function handler(req, res) {
   //   name: "Testname",
   // });
 
-  console.log(cards);
   res.status(200).json(cards);
 }
 
